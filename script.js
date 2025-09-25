@@ -172,42 +172,42 @@ function initPortfolioFilter() {
 }
 
 
-/** Single Slider Initialization */
+/** Single Slider Initialization with auto-slide */
 function initSlider(item) {
-    const images = item.querySelectorAll('.slider-image');
-    if (!images.length) return;
-    let current = 0;
+  const track = item.querySelector(".slider-track");
+  const images = item.querySelectorAll(".slider-image");
+  if (!track || !images.length) return;
 
-    images.forEach((img, i) => img.classList.toggle('hidden', i !== 0));
+  let current = 0;
 
-    const prevBtn = item.querySelector('.prev-btn');
-    const nextBtn = item.querySelector('.next-btn');
+  function showImage(index) {
+    track.style.transform = `translateX(-${index * 100}%)`;
+  }
 
-    if (!prevBtn || !nextBtn) return;
+  const prevBtn = item.querySelector(".prev-btn");
+  const nextBtn = item.querySelector(".next-btn");
 
-    // Remove previous listeners to avoid stacking
-    prevBtn.replaceWith(prevBtn.cloneNode(true));
-    nextBtn.replaceWith(nextBtn.cloneNode(true));
-
-    const newPrev = item.querySelector('.prev-btn');
-    const newNext = item.querySelector('.next-btn');
-
-    newPrev.addEventListener('click', e => {
-        e.stopPropagation();
-        current = (current - 1 + images.length) % images.length;
-        showImage(current, images);
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener("click", () => {
+      current = (current - 1 + images.length) % images.length;
+      showImage(current);
     });
 
-    newNext.addEventListener('click', e => {
-        e.stopPropagation();
-        current = (current + 1) % images.length;
-        showImage(current, images);
+    nextBtn.addEventListener("click", () => {
+      current = (current + 1) % images.length;
+      showImage(current);
     });
+  }
 
-    function showImage(index, imgs) {
-        imgs.forEach((img, i) => img.classList.toggle('hidden', i !== index));
-    }
+  // Auto-slide every 3s
+  setInterval(() => {
+    current = (current + 1) % images.length;
+    showImage(current);
+  }, 3000);
 }
+
+
+
 
 /** Smooth Scrolling */
 function initSmoothScrolling() {

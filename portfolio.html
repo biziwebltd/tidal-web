@@ -540,6 +540,60 @@ Explore our extensive portfolio of completed projects showcasing our commitment 
     @apply bg-[#2E8BC0] text-white border-[#2E8BC0];
 }
 </style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sliders = document.querySelectorAll(".portfolio-item");
+
+  sliders.forEach((slider) => {
+    const images = slider.querySelectorAll(".slider-image");
+    const prevBtn = slider.querySelector(".prev-btn");
+    const nextBtn = slider.querySelector(".next-btn");
+
+    let currentIndex = 0;
+    let autoSlide;
+
+    function showImage(index) {
+      images.forEach((img, i) => {
+        img.classList.toggle("hidden", i !== index);
+      });
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      showImage(currentIndex);
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      showImage(currentIndex);
+    }
+
+    // Button click handlers
+    if (nextBtn) nextBtn.addEventListener("click", () => {
+      nextImage();
+      restartAutoSlide();
+    });
+    if (prevBtn) prevBtn.addEventListener("click", () => {
+      prevImage();
+      restartAutoSlide();
+    });
+
+    // Auto-slide every 3s
+    function startAutoSlide() {
+      autoSlide = setInterval(nextImage, 5000);
+    }
+
+    function restartAutoSlide() {
+      clearInterval(autoSlide);
+      startAutoSlide();
+    }
+
+    // Init
+    showImage(currentIndex);
+    startAutoSlide();
+  });
+});
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
